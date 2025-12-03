@@ -38,10 +38,19 @@ Proyek ini dibuat untuk memenuhi tugas mata pelajaran Administrasi Sistem Jaring
 | **Web Server yang Dipilih** | Apache2 |
 | **Versi PHP yang Dipakai** | PHP Version 8.4.11 |
 
-## Pengertian APACHE
-Apache Web Server atau Apache HTTP Server adalah sebuah perangkat lunak web server yang digunakan untuk menerima permintaan (request) dari pengguna melalui browser, kemudian mengirimkan kembali halaman web (response) seperti HTML, gambar, atau data lainnya.
+## 🌐 Pengertian Apache
 
-Apache dibuat dan dikembangkan oleh Apache Software Foundation (ASF) dan merupakan salah satu web server paling populer di dunia karena bersifat open-source, gratis, stabil, dan fleksibel.
+Apache Web Server atau **Apache HTTP Server** adalah sebuah perangkat lunak **web server** yang digunakan untuk menerima permintaan (*request*) dari pengguna melalui browser, kemudian mengirimkan kembali halaman web (*response*) seperti HTML, gambar, atau data lainnya. ⚙️🌍
+
+Apache dibuat dan dikembangkan oleh **Apache Software Foundation (ASF)** dan merupakan salah satu web server paling populer di dunia karena bersifat:
+
+- 🆓 **Open-source**
+- 💸 **Gratis**
+- 🔒 **Stabil**
+- 🧩 **Fleksibel**
+
+Dengan keunggulan tersebut, Apache banyak digunakan sebagai fondasi berbagai website dan aplikasi server di seluruh dunia. 🚀
+
 
 ---
 
@@ -112,15 +121,17 @@ Berdasarkan pengalaman kami dalam proyek ini, berikut adalah analisis kelebihan 
 
 ## 4. 🧠 Refleksi Proyek: Kesan dan Kendala
 
-### 4.1. Kesan Selama Proses Pengerjaan ✨
+### ✨ 4.1. Kesan Selama Proses Pengerjaan
 
-> [Tuliskan kesan anggota kelompok, misalnya: "Kami merasa mendapatkan banyak ilmu baru, terutama dalam praktik Version Control menggunakan Git dan GitHub yang belum pernah kami lakukan sebelumnya, yang sangat membantu kolaborasi tim."]
+> Kami merasa bangga dan berhasil 😊 karena telah menyelesaikan tugas ini dengan cukup baik 🎉 meskipun masih banyak kekurangan dan kesalahan pada proses pengerjaannya. Untuk itu kami sangat berterimakasih kepada guru yang telah membimbing 🙏 karena dengan ini kami mendapatkan ilmu yaitu cara membuat web server khususnya **APACHE** 💻🔥 dan cara konfigurasinya. Kami sangat senang karena ilmu yang diberikan sangat bermanfaat 🌟📚.
+
 
 ### 4.2. Kendala dan Solusi yang Diterapkan
 
 | Kendala yang Kalian Hadapi | Solusi yang Ditemukan ✅ |
 | :--- | :--- |
-| SSH yang tidak bisa masuk | Buat akun kembali contoh: adduser bomber (di VMware) |
+| SSH yang tidak bisa masuk lupa pasword| Buat akun kembali contoh: adduser bomber (di VMware) |
+| SSH yang tidak bisa masuk meskipun sudah memasuki pw dengan benar| Buka Vmware SSHD nya di permitlooginnya ubah jadi permitlogin yes dan pagar (#) hapus |
 | Tidak bisa install Apache,PHP,SSL | Periksa Repository apakah sudah tersedia: nano /etc/apt/sources.list |
 | Tidak mendapatkan ip Dhcp ataupun internet | Cek di Vmware virtual network editor bridge0 nya harus ke internet secara langsung |
 
