@@ -56,54 +56,190 @@ Dengan keunggulan tersebut, Apache banyak digunakan sebagai fondasi berbagai web
 
 ## 2. 📝 Dokumentasi Teknis dan Langkah-Langkah Pengerjaan
 
-### 2.1. Persiapan Dasar (Debian Trixie di VMware)
+## 📘 Instalasi Apache Web Server, PHP, dan SSL di Debian
 
-1.  Melakukan *update* dan *upgrade* sistem.
+## 🌐🔥1.1 Instalasi Apache Web Server</h2>
 
-    ```bash
-    sudo apt update && sudo apt upgrade -y
-    ```
+🔹 Login dan Update Paket
+```bash
+apt update && apt upgrade -y
+```
 
-2.  Memastikan konfigurasi jaringan (Bridge/NAT/Host-Only) sudah benar dan IP Address statis sudah dikonfigurasi.
+🏗️ Instal Apache
+```bash
+apt install apache2
+```
 
-### 2.2. Instalasi dan Konfigurasi Web Server
+🚀 Aktifkan Apache dan Pastikan Berjalan</h3>
+```bash
+systemctl enable apache2
+systemctl start apache2
+systemctl status apache2
+```
 
-Kami menggunakan **APACHE**. Berikut langkah-langkah utamanya:
+## 🌍 Uji dari browser
+```bash
+http://ip-server
+```
 
-* **Instalasi:**
+## 🐘✨ 2. Instalasi PHP
 
-    ```bash
-    # [Tuliskan perintah instalasi Web Server Kalian, contoh: sudo apt install nginx -y]
-    ```
+📦 Instal PHP Dasar
+```bash
+apt install php
+```
 
-* **Konfigurasi Virtual Host/Server Block:**
+🔌 Instalasi Extension PHP Tambahan</h3>
+```bash
+apt install php-common php-xml php-curl php-zip php-gd php-mbstring php-intl php-json php-soap php-mysql
+```
 
-    > [Jelaskan secara singkat penyesuaian konfigurasi yang Kalian lakukan pada file utama, misalnya penentuan Document Root dan port. Contoh: Kami membuat file `/etc/nginx/sites-available/default` dan mengarahkan `root` ke `/var/www/html/project-asj`.]
+🧪  Pastikan PHP Berjalan
 
-### 2.3. Konfigurasi PHP ⚙️
+## Buat file uji:
+```bash
+nano /var/www/html/info.php
+```
 
-Kami menggunakan **[JENIS PHP: mod_php / php-fpm / lsphp]** untuk mengintegrasikan PHP dengan Web Server.
+## ✍️ Isi file dengan:
+```bash
+&lt;?php phpinfo(); ?&gt;
+```
 
-* **Instalasi PHP:**
+## 🌐  Akses dari browser:
+```bash
+http://ip-server/info.php
+```
 
-    ```bash
-    # [Tuliskan perintah instalasi PHP dan modul yang dibutuhkan, contoh di bawah adalah untuk PHP-FPM]
-    sudo apt install php-fpm php-mysql
-    ```
 
-* **Integrasi:**
+## 🔐🛡️ 3. Menambahkan SSL Self-Signed Certificate
 
-    > [Jelaskan langkah-langkah integrasi antara PHP dengan Web Server yang Kalian pilih. Contoh: Kami memodifikasi *Server Block* Nginx untuk meneruskan (*proxy*) permintaan file `.php` ke *socket* PHP-FPM, misalnya `unix:/run/php/php8.2-fpm.sock`.]
+🧰 Instal OpenSSL dan Aktifkan Modul SSL</h3>
+```bash
+apt install openssl
+a2enmod ssl
+```
 
-### 2.4. Implementasi SSL (HTTPS) 🔒
+📁  Buat Folder untuk Sertifikat</h3>
+```bash
+mkdir /etc/apache2/ssl
+```
 
-Untuk mengaktifkan akses HTTPS, kami membuat *self-signed certificate*.
+🏷️  Buat Sertifikat Self-Signed</h3>
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+-keyout /etc/apache2/ssl/selfsigned.key \
+-out /etc/apache2/ssl/selfsigned.crt
+```
 
-1.  Membuat direktori untuk *certificate* (misalnya `/etc/ssl/certs/project-asj`).
-2.  Membuat *Key* dan *Certificate* menggunakan OpenSSL.
-3.  Memodifikasi konfigurasi Web Server untuk menggunakan port **443** dan menunjuk ke *key* dan *certificate* yang telah dibuat, serta memastikan akses dapat dilakukan melalui `https://[IP_SERVER]`.
+📝  Contoh Pengisian:
+```bash
+Country Name: ID
+State: Jawa Barat
+Organization: SMKN 1 Soreang
+Common Name: server.local
+```
 
----
+
+## ⚙️📄 4. Konfigurasi Virtual Host HTTPS
+
+📌 Salin File Konfigurasi Default
+```bash
+cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/000-default-ssl.conf
+```
+
+✏️ Edit File
+```bash
+nano /etc/apache2/sites-available/000-default-ssl.conf
+```
+
+## 🧩 Isi dengan konfigurasi berikut:
+```bash
+&lt;VirtualHost *:443&gt;
+    ServerAdmin admin@localhost
+    DocumentRoot /var/www/html
+    ServerName server.local
+
+    SSLEngine on
+    SSLCertificateFile /etc/apache2/ssl/selfsigned.crt
+    SSLCertificateKeyFile /etc/apache2/ssl/selfsigned.key
+
+    &lt;Directory /var/www/html&gt;
+        AllowOverride All
+        Options Indexes FollowSymLinks
+        Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+```
+
+
+## 🔧⚡ 5. Aktifkan HTTPS dan Modul Rewrite
+```bash
+a2ensite 000-default-ssl.conf
+a2enmod rewrite
+systemctl reload apache2
+```
+
+## 🧪 Uji dari browser:
+```bash
+https://ip-server
+```
+
+
+## 🔗➡️ 6. Redirect HTTP ke HTTPS (Opsional)
+
+✏️ Edit File HTTP
+```bash
+nano /etc/apache2/sites-available/000-default.conf
+```
+
+## Tambahkan di dalam ```&lt;VirtualHost *:80&gt;```
+
+```bash
+&lt;VirtualHost *:80&gt;
+    ServerAdmin admin@localhost
+    ServerName server.local
+    DocumentRoot /var/www/html
+
+    Redirect "/" "https://server.local/"
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;
+```
+
+🔄  Reload Apache
+```bash
+systemctl reload apache2
+```
+
+
+## 📂📌 7. Lokasi Utama File Website
+
+## 📂 Secara default, Apache menggunakan folder:
+```bash
+/var/www/html
+```
+
+## 🌐 Saat membuka:
+```bash
+http://ip-server
+https://ip-server
+```
+
+## 📄 Maka Apache akan menampilkan file:
+```bash
+index.html ATAU index.php
+```
+
+<p><i>beres ey......... 😎👍</i></p>
+
+
+
+
 
 ## 3. 📊 Analisis Web Server
 
