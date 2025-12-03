@@ -58,7 +58,7 @@ Dengan keunggulan tersebut, Apache banyak digunakan sebagai fondasi berbagai web
 
 ## 📘 Instalasi Apache Web Server, PHP, dan SSL di Debian
 
-## 🌐🔥1.1 Instalasi Apache Web Server</h2>
+## 🌐🔥1.Instalasi Apache Web Server</h2>
 
 🔹 Login dan Update Paket
 ```bash
