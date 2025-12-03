@@ -33,10 +33,15 @@ Proyek ini dibuat untuk memenuhi tugas mata pelajaran Administrasi Sistem Jaring
 | :--- | :--- |
 | **Sistem Operasi Tamu (Guest OS)** | Debian Trixie (12.x) |
 | **Alamat IP Server** | `172.16.54.192` |
-| **RAM VM** | [Jumlah RAM yang dialokasikan untuk VM, contoh: 2 GB] |
-| **vCPU** | [Jumlah Core CPU yang dialokasikan untuk VM, contoh: 2 Core] |
-| **Web Server yang Dipilih** | [Apache2 / Nginx / OpenLiteSpeed] |
-| **Versi PHP yang Dipakai** | [mod_php / php-fpm / lsphp] |
+| **RAM VM** | 20 GB |
+| **vCPU** | 2 Core |
+| **Web Server yang Dipilih** | Apache2 |
+| **Versi PHP yang Dipakai** | PHP Version 8.4.11 |
+
+## Pengertian APACHE
+Apache Web Server atau Apache HTTP Server adalah sebuah perangkat lunak web server yang digunakan untuk menerima permintaan (request) dari pengguna melalui browser, kemudian mengirimkan kembali halaman web (response) seperti HTML, gambar, atau data lainnya.
+
+Apache dibuat dan dikembangkan oleh Apache Software Foundation (ASF) dan merupakan salah satu web server paling populer di dunia karena bersifat open-source, gratis, stabil, dan fleksibel.
 
 ---
 
@@ -95,11 +100,13 @@ Untuk mengaktifkan akses HTTPS, kami membuat *self-signed certificate*.
 
 Berdasarkan pengalaman kami dalam proyek ini, berikut adalah analisis kelebihan dan kekurangan dari Web Server **[NAMA WEB SERVER]** yang kami gunakan:
 
-| Aspek | Kelebihan ([NAMA WEB SERVER]) | Kekurangan ([NAMA WEB SERVER]) |
+| Aspek | Kelebihan (APACHE) | Kekurangan (APACHE) |
 | :--- | :--- | :--- |
-| **Performa & Kecepatan** | [Tuliskan kelebihannya. Contoh: Mampu menangani banyak koneksi secara bersamaan dengan baik.] | [Tuliskan kekurangannya. Contoh: Membutuhkan *tuning* yang kompleks untuk performa maksimal.] |
-| **Kemudahan Konfigurasi** | [Tuliskan kelebihannya. Contoh: Struktur konfigurasi yang modular dan mudah dipahami.] | [Tuliskan kekurangannya. Contoh: Sintaks konfigurasi *rewriting* yang cukup spesifik.] |
-| **Fitur & Modularitas** | [Tuliskan kelebihannya. Contoh: Dukungan berbagai modul ekstensi pihak ketiga.] | [Tuliskan kekurangannya. Contoh: Beberapa fitur keamanan dasar memerlukan instalasi modul tambahan.] |
+| **1. Open Source & Gratis** | Dapat digunakan tanpa biaya lisensi dan dapat dimodifikasi sesuai kebutuhan. | Tidak Selalu Optimal untuk Traffic Tinggi Lebih lambat dibanding server modern seperti Nginx pada beban koneksi sangat besar karena arsitektur process-based.|
+| **2. Konfigurasi Fleksibel** | Mendukung banyak modul (mod_rewrite, mod_ssl, dll.) yang memudahkan kustomisasi fitur. | Penggunaan Memori Lebih Tinggi Karena memproses tiap request dengan thread/proses sendiri.
+| **3. Kompatibilitas Luas** | Berjalan di banyak sistem operasi: Linux, Windows, macOS, Unix | Konfigurasi Bisa Rumit untuk Pemula Banyak opsi dan modul yang perlu dipahami |
+| **4. Dukungan untuk Beragam Bahasa Pemrograman** | Sangat cocok dengan PHP, Python, Perl, dan integrasi dengan framework modern. | Scaling Kurang Efektif Kurang efisien untuk aplikasi yang menuntut performa real-time dan skalabilitas masif.
+| **5. Mendukung .htaccess** |Memungkinkan pengguna untuk mengatur konfigurasi per-directory tanpa menyentuh file utama. |  Potensi Celah Keamanan Jika Salah Konfigurasi Banyaknya fitur dapat meningkatkan risiko jika tidak ditangani dengan benar.|
 
 ---
 
@@ -113,21 +120,14 @@ Berdasarkan pengalaman kami dalam proyek ini, berikut adalah analisis kelebihan 
 
 | Kendala yang Kalian Hadapi | Solusi yang Ditemukan ✅ |
 | :--- | :--- |
-| [Tuliskan kendala teknis atau kolaborasi lain yang Kalian hadapi. Contoh: Sulitnya mengintegrasikan PHP-FPM dengan Nginx, karena *socket* tidak terdeteksi.] | [Jelaskan solusi spesifik Kalian. Contoh: Memastikan versi PHP-FPM yang terinstal sudah benar, kemudian mengecek path *socket* di file `/etc/php/[versi]/fpm/pool.d/www.conf` dan menyesuaikannya di konfigurasi Nginx.] |
-| [Kendala kedua, jika ada.] | [Solusi kedua.] |
+| SSH yang tidak bisa masuk | Buat akun kembali contoh: adduser bomber (di VMware) |
+| Tidak bisa install Apache,PHP,SSL | Periksa Repository apakah sudah tersedia: nano /etc/apt/sources.list |
+| Tidak mendapatkan ip Dhcp ataupun internet | Cek di Vmware virtual network editor bridge0 nya harus ke internet secara langsung |
 
 ---
 
-## 5. 📄 Dokumentasi Konten Website
-
-Seluruh *source code* (Halaman Utama dan Halaman Profil) yang berada di *document root* server telah disalin dan di-*commit* ke dalam *repository* GitHub ini.
-
-* **Struktur Direktori Konten:** `/html`
-
----
-
-## 6. 🎬 Dokumentasi Video Pengerjaan
+## 5. 🎬 Dokumentasi Video Pengerjaan
 
 Seluruh proses pengerjaan telah direkam dan diunggah ke YouTube sebagai bukti pengerjaan dan dokumentasi langkah-langkah.
 
-* **Link Video YouTube:** [Tuliskan link ke video pengerjaan kelompok kalian]
+* **Link Video YouTube:** https://youtu.be/5u4KNrHV7hE?si=celcA0tRszH86_ST
